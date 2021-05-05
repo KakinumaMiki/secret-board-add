@@ -1,6 +1,10 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  p POSTS
+  body.container
+    div.my-3
+      a(href="/logout").btn.btn-info.float-right ログアウト
+      h1= title
+      a(href="/profile").stretched-link.float-right プロフィールページ
+    h2 新規投稿
+
