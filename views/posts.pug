@@ -4,7 +4,17 @@ block content
   body.container
     div.my-3
       a(href="/logout").btn.btn-info.float-right ログアウト
-      h1= title
+      h1= h1
       a(href="/profile").stretched-link.float-right プロフィールページ
     h2 新規投稿
-
+    form(method="post" action="/posts")
+      dev.form-group
+        span タイトル：
+        input(type="text" name="title" value=title)
+      div.form-group
+        span 投稿内容：
+        textarea(name="content" rows="4").form-control
+        input(type="hidden" name="oneTimeToken" value=oneTimeToken)
+      div.form-group
+        button(type="submit").btn.btn-primary 投稿
+    h2 投稿一覧

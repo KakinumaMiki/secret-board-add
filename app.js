@@ -4,10 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// ルーター読み込み
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
 var profileRouter = require('./routes/profile')
+
+// モデル読み込み
+var User = require('./models/user');
+var Post = require('./models/post');
+User.sync({ alter: true }).then(() => {
+  Post.belongsTo(User, { foreignKey: 'postedBy' });
+  Post.sync({ alter: true });
+});
 
 var app = express();
 
