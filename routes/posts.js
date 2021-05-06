@@ -13,7 +13,11 @@ router.get('/', function (req, res, next) {
       post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
     });
     console.log('POST:' + posts);
-    res.render('posts', { posts: posts });
+    res.render('posts',
+    {
+      posts: posts,
+      h1: '秘密の匿名掲示板'
+    });
   })
 });
 
