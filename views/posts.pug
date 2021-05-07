@@ -21,9 +21,10 @@ block content
     each post in posts
       div.card.my-3
         div.card-header
-            - var isPostedByAdmin = (post.postedBy === 'admin')
+            - var userId = parseInt(user.id)
+            - var isPostedByAdmin = (post.postedBy === userId)
             if isPostedByAdmin
-              span #{post.id} : 管理人 ★
+              p #{post.id} : 管理人 ★
             else
               - var originalTrackingId = post.trackingCookie ? post.trackingCookie.split('_')[0] : ''
               p #{post.id} : ID:#{originalTrackingId}
@@ -33,10 +34,10 @@ block content
           p.card-text(style="white-space:pre; overflow:auto;") #{post.content}
         div.card-footer
             div 投稿日時: #{post.formattedCreatedAt}
-            - var isAdmin = (user === 'admin')
-            if isAdmin
+            if isPostedByAdmin
               div 投稿者: #{post.postedBy}
-            - var isDeletable = (user === post.postedBy || isAdmin)
+            - var isDeletable = (user === post.postedBy || isPostedByAdmin)
+            p #{isDeletable}
             if isDeletable
               form(method="post" action="/posts?delete=1")
                 input(type="hidden" name="id" value=post.id)
