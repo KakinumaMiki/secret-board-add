@@ -26,8 +26,9 @@ block content
               span #{post.id} : 管理人 ★
             else
               - var originalTrackingId = post.trackingCookie ? post.trackingCookie.split('_')[0] : ''
-              span #{post.id} : ID:#{originalTrackingId}
-            p タイトル : #{post.title}
+              p #{post.id} : ID:#{originalTrackingId}
+            span タイトル : #{post.title}
+            span.float-right 投稿者：#{post.postedBy}
         div.card-body
           p.card-text(style="white-space:pre; overflow:auto;") #{post.content}
         div.card-footer

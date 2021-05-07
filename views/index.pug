@@ -5,6 +5,12 @@ block content
   p Welcome to #{h1}
   div
     if user
-      a(href="/logout") #{user.username} をログアウト
+      ul.list-style-type.none
+        li
+          a(href="/posts") 投稿ページ
+        li
+          a(href="/profile") プロフィールページ
+        li
+          a(href="/logout") #{user.username} をログアウト
     else
       a(href="/login") ログイン

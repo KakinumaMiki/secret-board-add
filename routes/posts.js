@@ -11,39 +11,26 @@ router.get('/', function (req, res, next) {
     posts.forEach((post) => {
       post.content = post.content.replace(/\+/g, ' ');
       post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
+      console.log('user(post):' + post.postedBy);
     });
-    console.log('POST:' + posts);
+    console.log('user(posts):' + posts.postedBy);
     res.render('posts',
     {
       posts: posts,
+      user: req.user,
       h1: '秘密の匿名掲示板'
     });
   })
 });
 
 router.post('/', function (req, res, next) {
-
-  console.log('title: ' + req.body.title);
-  console.log('content: ' + req.body.content);
-  // console.log('postedBy: ' + req.body);
-
-
-
-
-
   Post.create({
-
-
     title: req.body.title,
     content: req.body.content,
-    // postedBy: req.user.id
-
-
+    postedBy: req.user.id
   }).then((post) => {
-
     res.redirect('/posts');
   });
-
 });
 
 module.exports = router;
