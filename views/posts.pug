@@ -14,7 +14,6 @@ block content
       div.form-group
         span 投稿内容：
         textarea(name="content" rows="4").form-control
-        input(type="hidden" name="oneTimeToken" value=oneTimeToken)
       div.form-group
         button(type="submit").btn.btn-primary 投稿
     h2 投稿一覧
@@ -22,22 +21,13 @@ block content
       div.card.my-3
         div.card-header
             - var userId = parseInt(user.id)
-            - var isPostedByAdmin = (post.postedBy === userId)
-            if isPostedByAdmin
-              p #{post.id} : 管理人 ★
-            else
-              - var originalTrackingId = post.trackingCookie ? post.trackingCookie.split('_')[0] : ''
-              p #{post.id} : ID:#{originalTrackingId}
+            - var isPostedBy = (post.postedBy === userId)
+              p #{post.id} 
             span タイトル : #{post.title}
             span.float-right 投稿者：#{post.user.username}
         div.card-body
           p.card-text(style="white-space:pre; overflow:auto;") #{post.content}
         div.card-footer
             div 投稿日時: #{post.formattedCreatedAt}
-            if isPostedByAdmin
-              div 投稿者: #{post.postedBy}
-            //- isAdmin: ログインしたユーザーを管理人とする要件に一旦しているため、全員が管理人になるからtrueとしている
-            - var isAdmin = true
-            - var isDeletable = ( isAdmin || isPostedByAdmin)
-            if isDeletable
+            if isPostedBy
               a(href=`/posts/${post.id}`).btn.btn-danger.float-right 削除
