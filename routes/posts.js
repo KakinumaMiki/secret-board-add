@@ -7,7 +7,7 @@ const moment = require('moment-timezone');
 /* GET */
 router.get('/', function (req, res, next) {
   let storedPost = null;
-  let storedUser = null;
+  var storedUser = [];
   Post.findAll({
     order: [['id', 'DESC']]
   }).then((posts) => {
@@ -18,14 +18,19 @@ router.get('/', function (req, res, next) {
       User.findOne({
         where: { userId: post.postedBy }
       }).then((user) => {
-        console.log('ここみたい' + user.username);
-      })
-    })
+        // console.log('ここみたい' + user.username);
+        storedUser.push(user.username);
+        console.log('storedUserの長さ1: ' + storedUser.length);
+      }).then(() => {
+        console.log('storedUserの長さ2: ' + storedUser.length);
+        console.log('postsの長さ' + posts.length);
+      });
+    });
     res.render('posts',
       {
         posts: posts,
-        user: req.user,
-        // user: user.username,
+        // user: req.user,
+        user: storedUser,
         h1: '秘密の匿名掲示板'
       });
   });
