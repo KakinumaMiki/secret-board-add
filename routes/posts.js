@@ -6,31 +6,22 @@ const moment = require('moment-timezone');
 
 /* GET */
 router.get('/', function (req, res, next) {
-  let storedPost = null;
-  var storedUser = [];
   Post.findAll({
+    include: [
+      {
+        model: User
+      }
+    ],
     order: [['id', 'DESC']]
   }).then((posts) => {
     posts.forEach((post) => {
       post.content = post.content.replace(/\+/g, ' ');
       post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
-      console.log('user(post):' + post.postedBy);
-      User.findOne({
-        where: { userId: post.postedBy }
-      }).then((user) => {
-        // console.log('ここみたい' + user.username);
-        storedUser.push(user.username);
-        console.log('storedUserの長さ1: ' + storedUser.length);
-      }).then(() => {
-        console.log('storedUserの長さ2: ' + storedUser.length);
-        console.log('postsの長さ' + posts.length);
-      });
-    });
+    })
     res.render('posts',
       {
         posts: posts,
-        // user: req.user,
-        user: storedUser,
+        user: req.user,
         h1: '秘密の匿名掲示板'
       });
   });
