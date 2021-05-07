@@ -7,20 +7,18 @@ const moment = require('moment-timezone');
 /* GET */
 router.get('/', function (req, res, next) {
   let storedPost = null;
-  let name = null;
+  let storedUser = null;
   Post.findAll({
     order: [['id', 'DESC']]
   }).then((posts) => {
     posts.forEach((post) => {
       post.content = post.content.replace(/\+/g, ' ');
       post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
-      name = post.postedBy;
-      console.log('user(name):' + name);
       console.log('user(post):' + post.postedBy);
       User.findOne({
-        where: { userId: name}
+        where: { userId: post.postedBy}
       }).then((user) => {
-        console.log(user.username);
+        console.log('ここみたい' + user.username);
       })
       res.render('posts',
       {
@@ -40,6 +38,16 @@ router.post('/', function (req, res, next) {
     postedBy: req.user.id
   }).then((post) => {
     res.redirect('/posts');
+  });
+});
+
+router.get('/:id', (req, res, next) => {
+  Post.findOne({
+    where: {id: req.params.id}
+  }).then((post) => {
+    post.destroy().then(() =>{
+      res.redirect('/posts');
+    });
   });
 });
 
