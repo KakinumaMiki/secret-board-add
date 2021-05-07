@@ -16,19 +16,19 @@ router.get('/', function (req, res, next) {
       post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY年MM月DD日 HH時mm分ss秒');
       console.log('user(post):' + post.postedBy);
       User.findOne({
-        where: { userId: post.postedBy}
+        where: { userId: post.postedBy }
       }).then((user) => {
         console.log('ここみたい' + user.username);
       })
-      res.render('posts',
+    })
+    res.render('posts',
       {
         posts: posts,
         user: req.user,
         // user: user.username,
         h1: '秘密の匿名掲示板'
       });
-    })
-    });
+  });
 });
 
 router.post('/', function (req, res, next) {
@@ -43,9 +43,9 @@ router.post('/', function (req, res, next) {
 
 router.get('/:id', (req, res, next) => {
   Post.findOne({
-    where: {id: req.params.id}
+    where: { id: req.params.id }
   }).then((post) => {
-    post.destroy().then(() =>{
+    post.destroy().then(() => {
       res.redirect('/posts');
     });
   });
