@@ -1,5 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1= h1
+  p Welcome to #{h1}
+  div
+    if user
+      ul.list-style-type.none
+        li
+          a(href="/posts") 投稿ページ
+        li
+          a(href="/profile") プロフィールページ
+        li
+          a(href="/logout") #{user.username} をログアウト
+    else
+      a(href="/login") ログイン

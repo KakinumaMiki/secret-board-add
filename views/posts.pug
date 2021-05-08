@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  body.container
+    div.my-3
+      a(href="/logout").btn.btn-info.float-right ログアウト
+      h1= h1
+      a(href="/profile").stretched-link.float-right プロフィールページ
+    h2 新規投稿
+    form(method="post" action="/posts")
+      dev.form-group
+        span タイトル：
+        input(type="text" name="title" value=title)
+      div.form-group
+        span 投稿内容：
+        textarea(name="content" rows="4").form-control
+      div.form-group
+        button(type="submit").btn.btn-primary 投稿
+    h2 投稿一覧
+    each post in posts
+      div.card.my-3
+        div.card-header
+            - var userId = parseInt(user.id)
+            - var isPostedBy = (post.postedBy === userId)
+              p #{post.id} 
+            span タイトル : #{post.title}
+            span.float-right 投稿者：#{post.user.username}
+        div.card-body
+          p.card-text(style="white-space:pre; overflow:auto;") #{post.content}
+        div.card-footer
+            div 投稿日時: #{post.formattedCreatedAt}
+            if isPostedBy
+              a(href=`/posts/${post.id}`).btn.btn-danger.float-right 削除
